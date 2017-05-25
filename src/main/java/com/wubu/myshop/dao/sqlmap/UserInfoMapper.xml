@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wubu.myshop.dao.mapper.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.wubu.myshop.dao.domain.UserInfo">
+    <id column="OID_USERNO" jdbcType="VARCHAR" property="oidUserno" />
+    <result column="STAT_USER" jdbcType="CHAR" property="statUser" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="MOB_USER" jdbcType="VARCHAR" property="mobUser" />
+    <result column="LEVEL_SECURITY" jdbcType="CHAR" property="levelSecurity" />
+    <result column="NAME_USER" jdbcType="VARCHAR" property="nameUser" />
+    <result column="SEX_USER" jdbcType="VARCHAR" property="sexUser" />
+    <result column="DATE_BIRTHDAY" jdbcType="VARCHAR" property="dateBirthday" />
+    <result column="TYPE_IDCARD" jdbcType="CHAR" property="typeIdcard" />
+    <result column="NO_IDCARD" jdbcType="VARCHAR" property="noIdcard" />
+    <result column="TEL_USER" jdbcType="VARCHAR" property="telUser" />
+    <result column="ADDR_PRO" jdbcType="VARCHAR" property="addrPro" />
+    <result column="ADDR_CITY" jdbcType="VARCHAR" property="addrCity" />
+    <result column="ADDR_DIST" jdbcType="VARCHAR" property="addrDist" />
+    <result column="ADDR_CONN" jdbcType="VARCHAR" property="addrConn" />
+    <result column="NO_POSTCODE" jdbcType="VARCHAR" property="noPostcode" />
+    <result column="DT_REG" jdbcType="TIMESTAMP" property="dtReg" />
+    <result column="DT_UNREG" jdbcType="TIMESTAMP" property="dtUnreg" />
+    <result column="DT_LASTUPDATE" jdbcType="TIMESTAMP" property="dtLastupdate" />
+    <result column="PRESERVING_INFO" jdbcType="VARCHAR" property="preservingInfo" />
+    <result column="NATION_USER" jdbcType="VARCHAR" property="nationUser" />
+    <result column="EXP_IDCARD" jdbcType="VARCHAR" property="expIdcard" />
+    <result column="TYPE_USER" jdbcType="CHAR" property="typeUser" />
+    <result column="OID_JOB" jdbcType="VARCHAR" property="oidJob" />
+    <result column="OID_CHNL" jdbcType="VARCHAR" property="oidChnl" />
+    <result column="STAT_MARRY" jdbcType="CHAR" property="statMarry" />
+    <result column="STAT_JOB" jdbcType="CHAR" property="statJob" />
+    <result column="FLAG_REAL" jdbcType="CHAR" property="flagReal" />
+    <result column="OPENID" jdbcType="VARCHAR" property="openid" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    OID_USERNO, STAT_USER, USER_ID, MOB_USER, LEVEL_SECURITY, NAME_USER, SEX_USER, DATE_BIRTHDAY, 
+    TYPE_IDCARD, NO_IDCARD, TEL_USER, ADDR_PRO, ADDR_CITY, ADDR_DIST, ADDR_CONN, NO_POSTCODE, 
+    DT_REG, DT_UNREG, DT_LASTUPDATE, PRESERVING_INFO, NATION_USER, EXP_IDCARD, TYPE_USER, 
+    OID_JOB, OID_CHNL, STAT_MARRY, STAT_JOB, FLAG_REAL, OPENID, PASSWORD,MEMO
+  </sql>
+  <select id="selectByExample" parameterType="com.wubu.myshop.dao.domain.UserInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_info_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_info_user
+    where OID_USERNO = #{oidUserno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_info_user
+    where OID_USERNO = #{oidUserno,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wubu.myshop.dao.domain.UserInfoExample">
+    delete from tb_info_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wubu.myshop.dao.domain.UserInfo">
+    insert into tb_info_user (OID_USERNO, STAT_USER, USER_ID, 
+      MOB_USER, LEVEL_SECURITY, NAME_USER, 
+      SEX_USER, DATE_BIRTHDAY, TYPE_IDCARD, 
+      NO_IDCARD, TEL_USER, ADDR_PRO, 
+      ADDR_CITY, ADDR_DIST, ADDR_CONN, 
+      NO_POSTCODE, DT_REG, DT_UNREG, 
+      DT_LASTUPDATE, PRESERVING_INFO, NATION_USER, 
+      EXP_IDCARD, TYPE_USER, OID_JOB, 
+      OID_CHNL, STAT_MARRY, STAT_JOB, 
+      FLAG_REAL, OPENID, PASSWORD,MEMO
+      )
+    values (#{oidUserno,jdbcType=VARCHAR}, #{statUser,jdbcType=CHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{mobUser,jdbcType=VARCHAR}, #{levelSecurity,jdbcType=CHAR}, #{nameUser,jdbcType=VARCHAR}, 
+      #{sexUser,jdbcType=VARCHAR}, #{dateBirthday,jdbcType=VARCHAR}, #{typeIdcard,jdbcType=CHAR}, 
+      #{noIdcard,jdbcType=VARCHAR}, #{telUser,jdbcType=VARCHAR}, #{addrPro,jdbcType=VARCHAR}, 
+      #{addrCity,jdbcType=VARCHAR}, #{addrDist,jdbcType=VARCHAR}, #{addrConn,jdbcType=VARCHAR}, 
+      #{noPostcode,jdbcType=VARCHAR}, #{dtReg,jdbcType=TIMESTAMP}, #{dtUnreg,jdbcType=TIMESTAMP}, 
+      #{dtLastupdate,jdbcType=TIMESTAMP}, #{preservingInfo,jdbcType=VARCHAR}, #{nationUser,jdbcType=VARCHAR}, 
+      #{expIdcard,jdbcType=VARCHAR}, #{typeUser,jdbcType=CHAR}, #{oidJob,jdbcType=VARCHAR}, 
+      #{oidChnl,jdbcType=VARCHAR}, #{statMarry,jdbcType=CHAR}, #{statJob,jdbcType=CHAR}, 
+      #{flagReal,jdbcType=CHAR}, #{openid,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wubu.myshop.dao.domain.UserInfo">
+    insert into tb_info_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oidUserno != null">
+        OID_USERNO,
+      </if>
+      <if test="statUser != null">
+        STAT_USER,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="mobUser != null">
+        MOB_USER,
+      </if>
+      <if test="levelSecurity != null">
+        LEVEL_SECURITY,
+      </if>
+      <if test="nameUser != null">
+        NAME_USER,
+      </if>
+      <if test="sexUser != null">
+        SEX_USER,
+      </if>
+      <if test="dateBirthday != null">
+        DATE_BIRTHDAY,
+      </if>
+      <if test="typeIdcard != null">
+        TYPE_IDCARD,
+      </if>
+      <if test="noIdcard != null">
+        NO_IDCARD,
+      </if>
+      <if test="telUser != null">
+        TEL_USER,
+      </if>
+      <if test="addrPro != null">
+        ADDR_PRO,
+      </if>
+      <if test="addrCity != null">
+        ADDR_CITY,
+      </if>
+      <if test="addrDist != null">
+        ADDR_DIST,
+      </if>
+      <if test="addrConn != null">
+        ADDR_CONN,
+      </if>
+      <if test="noPostcode != null">
+        NO_POSTCODE,
+      </if>
+      <if test="dtReg != null">
+        DT_REG,
+      </if>
+      <if test="dtUnreg != null">
+        DT_UNREG,
+      </if>
+      <if test="dtLastupdate != null">
+        DT_LASTUPDATE,
+      </if>
+      <if test="preservingInfo != null">
+        PRESERVING_INFO,
+      </if>
+      <if test="nationUser != null">
+        NATION_USER,
+      </if>
+      <if test="expIdcard != null">
+        EXP_IDCARD,
+      </if>
+      <if test="typeUser != null">
+        TYPE_USER,
+      </if>
+      <if test="oidJob != null">
+        OID_JOB,
+      </if>
+      <if test="oidChnl != null">
+        OID_CHNL,
+      </if>
+      <if test="statMarry != null">
+        STAT_MARRY,
+      </if>
+      <if test="statJob != null">
+        STAT_JOB,
+      </if>
+      <if test="flagReal != null">
+        FLAG_REAL,
+      </if>
+      <if test="openid != null">
+        OPENID,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="memo != null">
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oidUserno != null">
+        #{oidUserno,jdbcType=VARCHAR},
+      </if>
+      <if test="statUser != null">
+        #{statUser,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobUser != null">
+        #{mobUser,jdbcType=VARCHAR},
+      </if>
+      <if test="levelSecurity != null">
+        #{levelSecurity,jdbcType=CHAR},
+      </if>
+      <if test="nameUser != null">
+        #{nameUser,jdbcType=VARCHAR},
+      </if>
+      <if test="sexUser != null">
+        #{sexUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dateBirthday != null">
+        #{dateBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="typeIdcard != null">
+        #{typeIdcard,jdbcType=CHAR},
+      </if>
+      <if test="noIdcard != null">
+        #{noIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="telUser != null">
+        #{telUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addrPro != null">
+        #{addrPro,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null">
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrDist != null">
+        #{addrDist,jdbcType=VARCHAR},
+      </if>
+      <if test="addrConn != null">
+        #{addrConn,jdbcType=VARCHAR},
+      </if>
+      <if test="noPostcode != null">
+        #{noPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="dtReg != null">
+        #{dtReg,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dtUnreg != null">
+        #{dtUnreg,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dtLastupdate != null">
+        #{dtLastupdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preservingInfo != null">
+        #{preservingInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="nationUser != null">
+        #{nationUser,jdbcType=VARCHAR},
+      </if>
+      <if test="expIdcard != null">
+        #{expIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="typeUser != null">
+        #{typeUser,jdbcType=CHAR},
+      </if>
+      <if test="oidJob != null">
+        #{oidJob,jdbcType=VARCHAR},
+      </if>
+      <if test="oidChnl != null">
+        #{oidChnl,jdbcType=VARCHAR},
+      </if>
+      <if test="statMarry != null">
+        #{statMarry,jdbcType=CHAR},
+      </if>
+      <if test="statJob != null">
+        #{statJob,jdbcType=CHAR},
+      </if>
+      <if test="flagReal != null">
+        #{flagReal,jdbcType=CHAR},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wubu.myshop.dao.domain.UserInfoExample" resultType="java.lang.Long">
+    select count(*) from tb_info_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_info_user
+    <set>
+      <if test="record.oidUserno != null">
+        OID_USERNO = #{record.oidUserno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statUser != null">
+        STAT_USER = #{record.statUser,jdbcType=CHAR},
+      </if>
+      <if test="record.userId != null">
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobUser != null">
+        MOB_USER = #{record.mobUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.levelSecurity != null">
+        LEVEL_SECURITY = #{record.levelSecurity,jdbcType=CHAR},
+      </if>
+      <if test="record.nameUser != null">
+        NAME_USER = #{record.nameUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sexUser != null">
+        SEX_USER = #{record.sexUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dateBirthday != null">
+        DATE_BIRTHDAY = #{record.dateBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeIdcard != null">
+        TYPE_IDCARD = #{record.typeIdcard,jdbcType=CHAR},
+      </if>
+      <if test="record.noIdcard != null">
+        NO_IDCARD = #{record.noIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telUser != null">
+        TEL_USER = #{record.telUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrPro != null">
+        ADDR_PRO = #{record.addrPro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrCity != null">
+        ADDR_CITY = #{record.addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrDist != null">
+        ADDR_DIST = #{record.addrDist,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrConn != null">
+        ADDR_CONN = #{record.addrConn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noPostcode != null">
+        NO_POSTCODE = #{record.noPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtReg != null">
+        DT_REG = #{record.dtReg,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dtUnreg != null">
+        DT_UNREG = #{record.dtUnreg,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dtLastupdate != null">
+        DT_LASTUPDATE = #{record.dtLastupdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.preservingInfo != null">
+        PRESERVING_INFO = #{record.preservingInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nationUser != null">
+        NATION_USER = #{record.nationUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expIdcard != null">
+        EXP_IDCARD = #{record.expIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeUser != null">
+        TYPE_USER = #{record.typeUser,jdbcType=CHAR},
+      </if>
+      <if test="record.oidJob != null">
+        OID_JOB = #{record.oidJob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oidChnl != null">
+        OID_CHNL = #{record.oidChnl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statMarry != null">
+        STAT_MARRY = #{record.statMarry,jdbcType=CHAR},
+      </if>
+      <if test="record.statJob != null">
+        STAT_JOB = #{record.statJob,jdbcType=CHAR},
+      </if>
+      <if test="record.flagReal != null">
+        FLAG_REAL = #{record.flagReal,jdbcType=CHAR},
+      </if>
+      <if test="record.openid != null">
+        OPENID = #{record.openid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null">
+        MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_info_user
+    set OID_USERNO = #{record.oidUserno,jdbcType=VARCHAR},
+      STAT_USER = #{record.statUser,jdbcType=CHAR},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      MOB_USER = #{record.mobUser,jdbcType=VARCHAR},
+      LEVEL_SECURITY = #{record.levelSecurity,jdbcType=CHAR},
+      NAME_USER = #{record.nameUser,jdbcType=VARCHAR},
+      SEX_USER = #{record.sexUser,jdbcType=VARCHAR},
+      DATE_BIRTHDAY = #{record.dateBirthday,jdbcType=VARCHAR},
+      TYPE_IDCARD = #{record.typeIdcard,jdbcType=CHAR},
+      NO_IDCARD = #{record.noIdcard,jdbcType=VARCHAR},
+      TEL_USER = #{record.telUser,jdbcType=VARCHAR},
+      ADDR_PRO = #{record.addrPro,jdbcType=VARCHAR},
+      ADDR_CITY = #{record.addrCity,jdbcType=VARCHAR},
+      ADDR_DIST = #{record.addrDist,jdbcType=VARCHAR},
+      ADDR_CONN = #{record.addrConn,jdbcType=VARCHAR},
+      NO_POSTCODE = #{record.noPostcode,jdbcType=VARCHAR},
+      DT_REG = #{record.dtReg,jdbcType=TIMESTAMP},
+      DT_UNREG = #{record.dtUnreg,jdbcType=TIMESTAMP},
+      DT_LASTUPDATE = #{record.dtLastupdate,jdbcType=TIMESTAMP},
+      PRESERVING_INFO = #{record.preservingInfo,jdbcType=VARCHAR},
+      NATION_USER = #{record.nationUser,jdbcType=VARCHAR},
+      EXP_IDCARD = #{record.expIdcard,jdbcType=VARCHAR},
+      TYPE_USER = #{record.typeUser,jdbcType=CHAR},
+      OID_JOB = #{record.oidJob,jdbcType=VARCHAR},
+      OID_CHNL = #{record.oidChnl,jdbcType=VARCHAR},
+      STAT_MARRY = #{record.statMarry,jdbcType=CHAR},
+      STAT_JOB = #{record.statJob,jdbcType=CHAR},
+      FLAG_REAL = #{record.flagReal,jdbcType=CHAR},
+      OPENID = #{record.openid,jdbcType=VARCHAR},
+      MEMO = #{record.memo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wubu.myshop.dao.domain.UserInfo">
+    update tb_info_user
+    <set>
+      <if test="statUser != null">
+        STAT_USER = #{statUser,jdbcType=CHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobUser != null">
+        MOB_USER = #{mobUser,jdbcType=VARCHAR},
+      </if>
+      <if test="levelSecurity != null">
+        LEVEL_SECURITY = #{levelSecurity,jdbcType=CHAR},
+      </if>
+      <if test="nameUser != null">
+        NAME_USER = #{nameUser,jdbcType=VARCHAR},
+      </if>
+      <if test="sexUser != null">
+        SEX_USER = #{sexUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dateBirthday != null">
+        DATE_BIRTHDAY = #{dateBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="typeIdcard != null">
+        TYPE_IDCARD = #{typeIdcard,jdbcType=CHAR},
+      </if>
+      <if test="noIdcard != null">
+        NO_IDCARD = #{noIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="telUser != null">
+        TEL_USER = #{telUser,jdbcType=VARCHAR},
+      </if>
+      <if test="addrPro != null">
+        ADDR_PRO = #{addrPro,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null">
+        ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrDist != null">
+        ADDR_DIST = #{addrDist,jdbcType=VARCHAR},
+      </if>
+      <if test="addrConn != null">
+        ADDR_CONN = #{addrConn,jdbcType=VARCHAR},
+      </if>
+      <if test="noPostcode != null">
+        NO_POSTCODE = #{noPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="dtReg != null">
+        DT_REG = #{dtReg,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dtUnreg != null">
+        DT_UNREG = #{dtUnreg,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dtLastupdate != null">
+        DT_LASTUPDATE = #{dtLastupdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="preservingInfo != null">
+        PRESERVING_INFO = #{preservingInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="nationUser != null">
+        NATION_USER = #{nationUser,jdbcType=VARCHAR},
+      </if>
+      <if test="expIdcard != null">
+        EXP_IDCARD = #{expIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="typeUser != null">
+        TYPE_USER = #{typeUser,jdbcType=CHAR},
+      </if>
+      <if test="oidJob != null">
+        OID_JOB = #{oidJob,jdbcType=VARCHAR},
+      </if>
+      <if test="oidChnl != null">
+        OID_CHNL = #{oidChnl,jdbcType=VARCHAR},
+      </if>
+      <if test="statMarry != null">
+        STAT_MARRY = #{statMarry,jdbcType=CHAR},
+      </if>
+      <if test="statJob != null">
+        STAT_JOB = #{statJob,jdbcType=CHAR},
+      </if>
+      <if test="flagReal != null">
+        FLAG_REAL = #{flagReal,jdbcType=CHAR},
+      </if>
+      <if test="openid != null">
+        OPENID = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where OID_USERNO = #{oidUserno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wubu.myshop.dao.domain.UserInfo">
+    update tb_info_user
+    set STAT_USER = #{statUser,jdbcType=CHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      MOB_USER = #{mobUser,jdbcType=VARCHAR},
+      LEVEL_SECURITY = #{levelSecurity,jdbcType=CHAR},
+      NAME_USER = #{nameUser,jdbcType=VARCHAR},
+      SEX_USER = #{sexUser,jdbcType=VARCHAR},
+      DATE_BIRTHDAY = #{dateBirthday,jdbcType=VARCHAR},
+      TYPE_IDCARD = #{typeIdcard,jdbcType=CHAR},
+      NO_IDCARD = #{noIdcard,jdbcType=VARCHAR},
+      TEL_USER = #{telUser,jdbcType=VARCHAR},
+      ADDR_PRO = #{addrPro,jdbcType=VARCHAR},
+      ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      ADDR_DIST = #{addrDist,jdbcType=VARCHAR},
+      ADDR_CONN = #{addrConn,jdbcType=VARCHAR},
+      NO_POSTCODE = #{noPostcode,jdbcType=VARCHAR},
+      DT_REG = #{dtReg,jdbcType=TIMESTAMP},
+      DT_UNREG = #{dtUnreg,jdbcType=TIMESTAMP},
+      DT_LASTUPDATE = #{dtLastupdate,jdbcType=TIMESTAMP},
+      PRESERVING_INFO = #{preservingInfo,jdbcType=VARCHAR},
+      NATION_USER = #{nationUser,jdbcType=VARCHAR},
+      EXP_IDCARD = #{expIdcard,jdbcType=VARCHAR},
+      TYPE_USER = #{typeUser,jdbcType=CHAR},
+      OID_JOB = #{oidJob,jdbcType=VARCHAR},
+      OID_CHNL = #{oidChnl,jdbcType=VARCHAR},
+      STAT_MARRY = #{statMarry,jdbcType=CHAR},
+      STAT_JOB = #{statJob,jdbcType=CHAR},
+      FLAG_REAL = #{flagReal,jdbcType=CHAR},
+      OPENID = #{openid,jdbcType=VARCHAR},
+      MEMO = #{memo,jdbcType=VARCHAR}
+    where OID_USERNO = #{oidUserno,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,36 @@
+p{margin: 0;}
+			.login-bar {background-color: #2d2a3d;}
+			.login-title {color: #ffffff; font-size: 0.8rem;}
+			.login-left {color: #ffffff;}
+			.login-content {background-color: #f4f4f4;}
+			.login-logo {width: 6.5rem; height: 2.75rem; background-image: url(img/ubeLogo.png);background-size: 100% 100%; margin: 4.1rem auto;}
+			.login-formWp {padding: 0 0.75rem;}
+			.login-form {width: 100%; border: 1px solid #ccccce;border-radius: 0.3rem; overflow: hidden; z-index: 1000000;}
+			.margin0 {margin: 0;}
+			.login-list-block {margin: 0; font-size: 0.7rem; border-radius: 0.3rem; overflow: hidden;}
+			.login-list-block ul {border-radius: 0.3rem; overflow: hidden;}
+			.login-list-block input[type=text], .login-list-block input[type=password] {font-size: 0.65rem;}
+			.login-list-block .login-item-content {padding-left: 0; min-height: 2.4rem;}
+			.login-list-block .login-item-content .item-inner {padding-left: 0.65rem;}
+			.login-list-block .login-item-content .item-inner:after {background-color: #ccccce;}
+			.login-list-block .item-title.label {width: 25%;}
+			.login-phone-logo,.login-password-logo {width: 0.8rem; height: 1.25rem; /*background-color: red;*/ position: absolute; right: 0.65rem; background-image: url(img/loginPhone.png); background-size: 100% 100%;}
+			.login-password-logo {background-image: url(img/loginPassw.png);}
+			.login-btn {width: 96%; margin: 1.52rem auto 0;}
+			.login-btn button {width: 100%; height: 2rem; line-height: 2rem; background-color: #2d2a3d; color: #fff; font-size: 0.75rem; border: 1px solid #2d2a3d; border-radius: 0.2rem;}
+			.login-btn .disabledBtn {background-color: #ccc; border-color: #ccc;}
+			.login-btn>p {position: relative; text-align: right;font-size: 0.65rem; color: #24c4fe; margin: 0.25rem 0;}
+			.message-login {position: absolute; left: 0;}
+			.message-login>a {color: #24c4fe;}
+			/*popupÑùÊ½*/
+			.login-screen.modal-in, .login-screen.modal-out, .popup.modal-in, .popup.modal-out {
+			    -webkit-transition-duration: .01s;
+			    transition-duration: .01s;
+			}
+			.popup {background-color: transparent;}
+			.pop-content {position: absolute; top: 50%; left: 9.5%; width: 81%; height: 8.5rem; background-color: #ffffff; margin: -4.25rem auto 0; border-radius: 0.3rem; overflow: hidden;}
+			.pop-content-text {width: 100%; height: 5.7rem; border-bottom: 1px solid #ededed; }
+			.pop-content-btns {width: 100%; height: 2.7rem;line-height: 2.7rem; font-size: 0.8rem;text-align: center;color: #7bc7d7; }
+			.pop-content-btns>a {color: #7bc7d7;}
+			.pop-content-text>p {text-align: center; font-size: 0.8rem; padding-top: 2.2rem;}
+			.popclose {display: block; width: 0.8rem; height: 0.8rem; background-image: url(img/close.png); background-size: 100% 100%; position: absolute; top: 0.5rem; right: 0.5rem;}
