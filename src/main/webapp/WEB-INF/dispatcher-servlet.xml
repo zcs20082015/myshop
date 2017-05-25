@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	<context:component-scan base-package='com.wubu'>
+		<!-- <context:include-filter expression='org.springframework.stereotype.Controller' 
+			type='annotation' /> -->
+		<context:exclude-filter expression='org.springframework.stereotype.Service'
+			type='annotation' />
+	</context:component-scan>
+	<mvc:annotation-driven  validator="validator"
+		content-negotiation-manager="contentNegotiationManager" />
+	<bean id="contentNegotiationManager"
+		class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="favorPathExtension" value="false" />
+		<property name="favorParameter" value="false" />
+		<property name="ignoreAcceptHeader" value="false" />
+		<property name="mediaTypes">
+			<value>
+				atom=application/atom+xml
+				html=text/html
+				json=application/json
+				*=*/*
+			</value>
+		</property>
+	</bean>
+	<aop:aspectj-autoproxy proxy-target-class="true">
+
+	</aop:aspectj-autoproxy>
+
+	<mvc:default-servlet-handler />
+
+	<mvc:interceptors>
+		<!-- 非法参数过滤拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.wubu.share.interceptor.ParamsFilterInterceptor">
+				<property name="excludeParams">
+					<value>
+						^\d\w*,.*\\u0023.*
+					</value>
+				</property>
+				<property name="excludeValues">
+					<value>
+						^\w*drop\w*,.*\\u0023.*,^\w*delete\w*,^\w*script\w*,^\w*select\w*,^\w*insert\w*,^\w*exec\w*,^\w*update\w*,^\w*truncate\w*
+					</value>
+				</property>
+			</bean>
+		</mvc:interceptor>
+		
+		<!--访问控制拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.wubu.myshop.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 定义Spring MVC 视图 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />     <!-- 支持JSTL -->
+		<property name="prefix" value="/page/" />       <!-- 模板的路径 -->
+		<property name="suffix" value=".jsp" />                <!-- 模板文件的后缀 -->
+	</bean>
+</beans>
