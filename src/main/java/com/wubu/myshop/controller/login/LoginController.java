@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.alibaba.fastjson.JSON;
 import com.wubu.myshop.domain.LoginReq;
@@ -49,7 +50,7 @@ public class LoginController extends BaseController{
 	
 	@RequestMapping("/index")
 	public String index(){
-		
+		String correlationID=session.getId();
 		log.info(tag+"进入主页","tologin",correlationID,null);
 		
 		return "index";
@@ -63,6 +64,7 @@ public class LoginController extends BaseController{
 	@RequestMapping("/regist")
 	@ResponseBody
 	public BaseResBean regist(@RequestBody @Valid UserRegistReq userRegistReq,BindingResult result){
+		String correlationID=session.getId();
 		log.info(tag+"进入用户注册处理方法，请求参数：{}","regist",correlationID,null,JSON.toJSONString(userRegistReq));
 		
 		//参数校验
@@ -95,6 +97,7 @@ public class LoginController extends BaseController{
 	@RequestMapping("/exist")
 	@ResponseBody
 	public BaseResBean existCheck(String user_id,String mob_user){
+		String correlationID=session.getId();
 		log.info(tag+"进入用户[{}]信息存在性校验处理方法","existCheck",correlationID,mob_user,user_id);
 		
 		if(FuncUtils.isNull(user_id)&&FuncUtils.isNull(mob_user)){
@@ -131,7 +134,7 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping("login")
 	public BaseResBean login(@RequestBody LoginReq loginReq){
-		log.info(tag+"进入用户登陆处理方法，请求参数：{}","login",correlationID,null,JSON.toJSONString(loginReq));
+		log.info(tag+"进入用户登陆处理方法，请求参数：{}","login",session.getId(),null,JSON.toJSONString(loginReq));
 		
 		
 		return null;
@@ -139,19 +142,19 @@ public class LoginController extends BaseController{
 	private void existCheck(UserRegistReq req){
 		
 		UserInfo user=new UserInfo();
-		user.setCorrelationID(correlationID);
+		user.setCorrelationID(session.getId());
 		user.setUserId(req.getUser_id());
 		user=userService.singleQuery(user);
 		if(null!=user){
-			log.info(tag+"用户[{}]信息存在性校验处理方法，user_id已被占用--{}","existCheck",correlationID,null,req.getUser_id(),JSON.toJSONString(user));
+			log.info(tag+"用户[{}]信息存在性校验处理方法，user_id已被占用--{}","existCheck",session.getId(),null,req.getUser_id(),JSON.toJSONString(user));
 			throw new JsonRetException(ErrorCode.USER_ID_HAS_BEEN,null);
 		}
 		user=new UserInfo();
-		user.setCorrelationID(correlationID);
+		user.setCorrelationID(session.getId());
 		user.setMobUser(req.getMob_user());
 		user=userService.singleQuery(user);
 		if(null!=user){
-			log.info(tag+"用户[{}]信息存在性校验处理方法，mob_user已被占用--{}","existCheck",correlationID,req.getMob_user(),req.getMob_user(),JSON.toJSONString(user));
+			log.info(tag+"用户[{}]信息存在性校验处理方法，mob_user已被占用--{}","existCheck",session.getId(),req.getMob_user(),req.getMob_user(),JSON.toJSONString(user));
 			throw new JsonRetException(ErrorCode.USER_MOB_HAS_BEEN,null);
 		}
 	}

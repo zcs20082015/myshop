@@ -52,7 +52,8 @@ public class FlowAspect {
 					.currentRequestAttributes()).getRequest();
 			response = ((ServletRequestAttributes) RequestContextHolder
 					.currentRequestAttributes()).getResponse();
-			correlationID = baseController.getCorrelationID();
+			correlationID = (String) request.getSession().getId();
+			
 			log.info("消息id[" + correlationID + "]方法调用开始。");
 			result = pjp.proceed();
 			log.info("消息id[" + correlationID + "]方法调用完成。");

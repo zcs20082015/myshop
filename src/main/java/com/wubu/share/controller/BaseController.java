@@ -4,8 +4,15 @@
 package com.wubu.share.controller;
 
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.wubu.share.domain.base.BaseResBean;
@@ -24,8 +31,13 @@ public class BaseController {
 
 	protected Logger log = LoggerFactory.getLogger(BaseController.class);
 	protected String tag="Method[{}],correlationID[{}],mob_user[{}]--";
-	
-	protected String correlationID=UuidUtil.getUuid();
+
+	@Autowired
+	protected HttpServletRequest request;
+	@Autowired
+	protected HttpServletResponse response;
+	@Autowired
+	protected HttpSession session;
 	
 	/**
 	 * <p>Function: 构建成功返回对象</P>
@@ -39,12 +51,5 @@ public class BaseController {
 		return res;
 	}
 
-	public String getCorrelationID() {
-		return correlationID;
-	}
-
-	public void setCorrelationID(String correlationID) {
-		this.correlationID = correlationID;
-	}
 	
 }
