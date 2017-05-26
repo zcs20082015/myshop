@@ -132,6 +132,9 @@ public class LoginController extends BaseController{
 	@RequestMapping("login")
 	public BaseResBean login(@RequestBody LoginReq loginReq){
 		log.info(tag+"进入用户登陆处理方法，请求参数：{}","login",correlationID,null,JSON.toJSONString(loginReq));
+		
+		
+		return null;
 	}
 	private void existCheck(UserRegistReq req){
 		

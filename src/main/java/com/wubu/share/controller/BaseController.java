@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.wubu.share.domain.base.BaseResBean;
 import com.wubu.share.enums.ErrorCode;
+import com.wubu.share.util.FuncUtils;
 import com.wubu.share.util.UuidUtil;
 
 /** <p>Title: BaseController </p>
@@ -24,6 +25,7 @@ public class BaseController {
 	protected Logger log = LoggerFactory.getLogger(BaseController.class);
 	protected String tag="Method[{}],correlationID[{}],mob_user[{}]--";
 	
+	protected String correlationID=UuidUtil.getUuid();
 	
 	/**
 	 * <p>Function: 构建成功返回对象</P>
@@ -35,6 +37,14 @@ public class BaseController {
 		res.setRet_code(ErrorCode.SUCCESS.code);
 		res.setRet_msg(ErrorCode.SUCCESS.msg);
 		return res;
+	}
+
+	public String getCorrelationID() {
+		return correlationID;
+	}
+
+	public void setCorrelationID(String correlationID) {
+		this.correlationID = correlationID;
 	}
 	
 }
