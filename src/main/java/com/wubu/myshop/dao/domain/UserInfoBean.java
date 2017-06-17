@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.wubu.share.domain.base.BaseBean;
 
-public class UserInfo extends BaseBean{
+public class UserInfoBean extends BaseBean{
     private String oidUserno;
 
     private String statUser;

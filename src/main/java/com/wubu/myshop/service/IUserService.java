@@ -5,7 +5,6 @@ import java.util.List;
 import com.wubu.myshop.domain.UserInfo;
 import com.wubu.share.wrapper.ModelListResult;
 
-
 /**
  * <p>Title: IUserService </p>
  * <p>Description: </p>
@@ -13,8 +12,7 @@ import com.wubu.share.wrapper.ModelListResult;
  * @author zhengcs@uubee.com
  * @date 2017年5月3日 下午9:47:17
  */
-public interface IUserService{
-	
+	public interface IUserService{
 	/**
 	 * <p>Function: 用户注册</P>
 	 * @author zhengcs@uubee.com

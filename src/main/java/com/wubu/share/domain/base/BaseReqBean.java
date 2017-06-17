@@ -17,8 +17,6 @@ public class BaseReqBean implements Serializable {
 
 	private String user_id;
 	
-	private String user_login;
-	
 	private String mob_user;
 	
 	
@@ -36,14 +34,6 @@ public class BaseReqBean implements Serializable {
 
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
-	}
-
-	public String getUser_login() {
-		return user_login;
-	}
-
-	public void setUser_login(String user_login) {
-		this.user_login = user_login;
 	}
 
 	public String getMob_user() {

@@ -1,5 +1,7 @@
 package com.wubu.share.util;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -48,12 +50,71 @@ public class FuncUtils {
         return Pattern.matches("[\u4E00-\u9FA5]{1,15}?(?:[·.．•][\u4E00-\u9FA5]{1,15})*", name);
     }
 	/**
+	 * <p>Function: 是否金钱</P>
+	 * 包含0
+	 * @author zhengcs@uubee.com
+	 * @date 2017年6月15日 上午10:54:40
+	 */
+	public static boolean isMoney(String money) {
+		if (isNull(money)) {
+			return false;
+		}
+		Pattern pattern = Pattern.compile("^[0-9]{0,}[.]{0,1}[0-9]{0,2}$");
+		if (!pattern.matcher(money).matches()) {
+			return false;
+		}
+		
+		if (Double.parseDouble(money) < 0.01 && Double.parseDouble(money)!=0) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * <p>Function: 厘转为元</P>
+	 * @author zhengcs@uubee.com
+	 * @date 2017年6月15日 上午10:58:19
+	 */
+	public static String li2yuan(String money) {
+		if (money == null) {
+			return "";
+		}
+		try {
+			double dmoney = Double.parseDouble(money);
+			dmoney /= 1000;
+			DecimalFormat format = new DecimalFormat("#0.00#");
+			return format.format(dmoney);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	/**
+	 * <p>Function: 元转为厘</P>
+	 * @author zhengcs@uubee.com
+	 * @date 2017年6月15日 上午10:58:53
+	 */
+	public static String yuan2li(String amtStr) {
+		Long d = new BigDecimal(amtStr).multiply(new BigDecimal(1000))
+				.longValue();
+		return d.toString();
+	}
+	/**
 	 * <p>Function: 生成用户号</P>
 	 * @author zhengcs@uubee.com
 	 * @date 2017年5月10日 下午9:46:31
 	 */
 	public static String genOidUserno(){
-		return DateUtil.getCurrentDateTimeMs()+RandomStringUtils.random(3, 0, 1000, false, true);
+		return "U"+DateUtil.getCurrentDateTimeMs()+RandomStringUtils.random(3, 0, 1000, false, true);
+	}
+	/**
+	 * <p>Function: 生成产品编号</P>
+	 * @author zhengcs@uubee.com
+	 * @date 2017年6月15日 下午3:49:23
+	 */
+	public static String genOidGoods(){
+		return "G"+DateUtil.getCurrentDateTimeMs()+RandomStringUtils.random(3, 0, 1000, false, true);
 	}
 	public static void main(String[] args) {
 		System.out.println(genOidUserno());

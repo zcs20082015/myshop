@@ -16,6 +16,11 @@ import com.wubu.myshop.dao.domain.UserInfoExample.Criteria;
 import com.wubu.myshop.dao.mapper.UserInfoMapper;
 import com.wubu.myshop.domain.UserInfo;
 import com.wubu.myshop.service.IUserService;
+import com.wubu.share.enums.ErrorCode;
+import com.wubu.share.exception.BusiException;
+import com.wubu.share.exception.ParamException;
+import com.wubu.share.exception.UserNoneException;
+import com.wubu.share.exception.UserQueryFailException;
 import com.wubu.share.service.BaseService;
 import com.wubu.share.util.DateUtil;
 import com.wubu.share.util.FuncUtils;
@@ -39,12 +44,12 @@ public class UserService extends BaseService implements IUserService{
 		log.info(tag+"进入用户注册方法，请求参数:{}","UserService","userRegist",user.getCorrelationID(),JSON.toJSONString(user));
 		//参数校验
 		if(FuncUtils.isNull(user.getMobUser())||FuncUtils.isNull(user.getUserId())||FuncUtils.isNull(user.getPassword())){
-			return null;
+			throw new ParamException();
 		}
 		//生成用户号
 		String oid_userno=FuncUtils.genOidUserno();
 		
-		com.wubu.myshop.dao.domain.UserInfo userInfo=JSON.parseObject(JSON.toJSONString(user),com.wubu.myshop.dao.domain.UserInfo.class);
+		com.wubu.myshop.dao.domain.UserInfoBean userInfo=JSON.parseObject(JSON.toJSONString(user),com.wubu.myshop.dao.domain.UserInfoBean.class);
 		userInfo.setStatUser("0");
 		userInfo.setPassword(MD5Utils.MD5Encrpytion(MD5Utils.MD5Encrpytion(user.getPassword())));
 		userInfo.setOidUserno(oid_userno);
@@ -55,7 +60,7 @@ public class UserService extends BaseService implements IUserService{
 			userInfoMapper.insertSelective(userInfo);
 		} catch (Exception e) {
 			log.error(tag+"用户注册异常","UserService","userRegist",user.getCorrelationID(),e);
-			return null;
+			throw new BusiException(ErrorCode.USER_REGISTER_FAIL);
 		}
 		log.info(tag+"用户注册成功，用户号：{}","UserService","userRegist",user.getCorrelationID(),oid_userno);
 		return JSON.parseObject(JSON.toJSONString(userInfo),UserInfo.class);
@@ -66,10 +71,10 @@ public class UserService extends BaseService implements IUserService{
 		log.info(tag+"进入用户信息更新方法，请求参数:{}","UserService","updateUserInfo",user.getCorrelationID(),JSON.toJSONString(user));
 		//参数校验
 		if(FuncUtils.isNull(user.getOidUserno())){
-			return null;
+			throw new ParamException("oid_userno");
 		}
 		
-		com.wubu.myshop.dao.domain.UserInfo userInfo=JSON.parseObject(JSON.toJSONString(user),com.wubu.myshop.dao.domain.UserInfo.class);
+		com.wubu.myshop.dao.domain.UserInfoBean userInfo=JSON.parseObject(JSON.toJSONString(user),com.wubu.myshop.dao.domain.UserInfoBean.class);
 		
 		userInfo.setDtLastupdate(DateUtil.getCurrentDateTime19());
 		
@@ -77,7 +82,7 @@ public class UserService extends BaseService implements IUserService{
 			userInfoMapper.updateByPrimaryKeySelective(userInfo);
 		} catch (Exception e) {
 			log.error(tag+"用户信息更新异常","UserService","updateUserInfo",user.getCorrelationID(),e);
-			return null;
+			throw new BusiException(ErrorCode.USER_INFO_UPDATE_FAIL);
 		}
 		log.info(tag+"用户信息更新成功，用户号：{}","UserService","updateUserInfo",user.getCorrelationID());
 		return JSON.parseObject(JSON.toJSONString(userInfo),UserInfo.class);
@@ -88,10 +93,10 @@ public class UserService extends BaseService implements IUserService{
 		log.info(tag+"进入用户信息单条查询方法，请求参数:{}","UserService","singleQuery",user.getCorrelationID(),JSON.toJSONString(user));
 		//参数校验
 		if(FuncUtils.isNull(user.getOidUserno())&&FuncUtils.isNull(user.getMobUser())&&FuncUtils.isNull(user.getUserId())){
-			return null;
+			throw new ParamException();
 		}
 		
-		com.wubu.myshop.dao.domain.UserInfo userInfo=new com.wubu.myshop.dao.domain.UserInfo();
+		com.wubu.myshop.dao.domain.UserInfoBean userInfo=new com.wubu.myshop.dao.domain.UserInfoBean();
 		UserInfoExample example=new UserInfoExample();
 		Criteria criteria=example.createCriteria();
 		if(!FuncUtils.isNull(user.getOidUserno())){
@@ -101,16 +106,16 @@ public class UserService extends BaseService implements IUserService{
 		}else{
 			criteria.andMobUserEqualTo(user.getMobUser());
 		}
-		List<com.wubu.myshop.dao.domain.UserInfo> list=null;
+		List<com.wubu.myshop.dao.domain.UserInfoBean> list=null;
 		try {
 			list=userInfoMapper.selectByExample(example);
 		} catch (Exception e) {
 			log.error(tag+"用户信息查询异常","UserService","singleQuery",user.getCorrelationID(),e);
-			return null;
+			throw new UserQueryFailException();
 		}
 		if(list.size()==0){
 			log.info(tag+"用户信息查询不存在","UserService","singleQuery",user.getCorrelationID());
-			return null;
+			throw new UserNoneException();
 		}
 		userInfo=list.get(0);
 		log.info(tag+"用户信息查询成功{}","UserService","singleQuery",user.getCorrelationID(),JSON.toJSONString(userInfo));
@@ -146,17 +151,17 @@ public class UserService extends BaseService implements IUserService{
 		}
         example.setPage(user.getPage());
         example.setPageSize(user.getPageSize());
-		List<com.wubu.myshop.dao.domain.UserInfo> list=null;
+		List<com.wubu.myshop.dao.domain.UserInfoBean> list=null;
 		long count=0;
 		try {
 			count=userInfoMapper.countByExample(example);
 			list=userInfoMapper.selectByExample(example);
 		} catch (Exception e) {
 			log.error(tag+"用户信息查询异常","UserService","queryList",user.getCorrelationID(),e);
-			return null;
+			throw new UserQueryFailException();
 		}
 		List<UserInfo> list2=new ArrayList<>();
-		for(com.wubu.myshop.dao.domain.UserInfo userInfo:list){
+		for(com.wubu.myshop.dao.domain.UserInfoBean userInfo:list){
 			list2.add(JSON.parseObject(JSON.toJSONString(userInfo), UserInfo.class));
 		}
 		ModelListResult<UserInfo> res=new ModelListResult<>();
@@ -171,19 +176,19 @@ public class UserService extends BaseService implements IUserService{
 		log.info(tag+"进入根据openid查询用户信息方法，请求参数:openid{}","UserService","singleQuery",correlationID,openid);
 		//参数校验
 		if(FuncUtils.isNull(openid)){
-			return null;
+			throw new ParamException();
 		}
 		
-		com.wubu.myshop.dao.domain.UserInfo userInfo=new com.wubu.myshop.dao.domain.UserInfo();
+		com.wubu.myshop.dao.domain.UserInfoBean userInfo=new com.wubu.myshop.dao.domain.UserInfoBean();
 		UserInfoExample example=new UserInfoExample();
 		Criteria criteria=example.createCriteria();
 		criteria.andOpenidEqualTo(openid);
-		List<com.wubu.myshop.dao.domain.UserInfo> list=null;
+		List<com.wubu.myshop.dao.domain.UserInfoBean> list=null;
 		try {
 			list=userInfoMapper.selectByExample(example);
 		} catch (Exception e) {
 			log.error(tag+"用户信息查询异常","UserService","queryUserByOpenID",correlationID,e);
-			return null;
+			throw new UserQueryFailException();
 		}
 		if(list.size()==0){
 			log.info(tag+"用户信息查询不存在","UserService","queryUserByOpenID",correlationID);
@@ -200,7 +205,7 @@ public class UserService extends BaseService implements IUserService{
 		log.info(tag+"进入绑定用户微信方法，请求参数:oid_userno[{}],openid[{}]","UserService","userBindOpenid",correlationID,oid_userno,openid);
 		//参数校验
 		if(FuncUtils.isNull(oid_userno)||FuncUtils.isNull(openid)){
-			return false;
+			throw new ParamException();
 		}
 		
 		UserInfo user=new UserInfo();
@@ -209,11 +214,6 @@ public class UserService extends BaseService implements IUserService{
 		user.setOidUserno(oid_userno);
 		
 		user=updateUserInfo(user);
-		
-		if(null==user){
-			log.info(tag+"绑定用户[{}]微信关系失败","UserService","userBindOpenid",correlationID,oid_userno);
-			return false;
-		}
 		
 		log.info(tag+"绑定用户[{}]微信关系成功","UserService","userBindOpenid",correlationID,oid_userno);
 		return true;

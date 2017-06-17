@@ -1,6 +1,6 @@
 package com.wubu.myshop.dao.mapper;
 
-import com.wubu.myshop.dao.domain.UserInfo;
+import com.wubu.myshop.dao.domain.UserInfoBean;
 import com.wubu.myshop.dao.domain.UserInfoExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -12,19 +12,19 @@ public interface UserInfoMapper {
 
     int deleteByPrimaryKey(String oidUserno);
 
-    int insert(UserInfo record);
+    int insert(UserInfoBean record);
 
-    int insertSelective(UserInfo record);
+    int insertSelective(UserInfoBean record);
 
-    List<UserInfo> selectByExample(UserInfoExample example);
+    List<UserInfoBean> selectByExample(UserInfoExample example);
 
-    UserInfo selectByPrimaryKey(String oidUserno);
+    UserInfoBean selectByPrimaryKey(String oidUserno);
 
-    int updateByExampleSelective(@Param("record") UserInfo record, @Param("example") UserInfoExample example);
+    int updateByExampleSelective(@Param("record") UserInfoBean record, @Param("example") UserInfoExample example);
 
-    int updateByExample(@Param("record") UserInfo record, @Param("example") UserInfoExample example);
+    int updateByExample(@Param("record") UserInfoBean record, @Param("example") UserInfoExample example);
 
-    int updateByPrimaryKeySelective(UserInfo record);
+    int updateByPrimaryKeySelective(UserInfoBean record);
 
-    int updateByPrimaryKey(UserInfo record);
+    int updateByPrimaryKey(UserInfoBean record);
 }

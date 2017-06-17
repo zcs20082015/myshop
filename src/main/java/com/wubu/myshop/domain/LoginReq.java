@@ -17,7 +17,7 @@ public class LoginReq extends BaseReqBean{
 
 	private String password;
 	
-	private String verify;
+	private String verify_code;
 
 	public String getPassword() {
 		return password;
@@ -27,11 +27,11 @@ public class LoginReq extends BaseReqBean{
 		this.password = password;
 	}
 
-	public String getVerify() {
-		return verify;
+	public String getVerify_code() {
+		return verify_code;
 	}
 
-	public void setVerify(String verify) {
-		this.verify = verify;
+	public void setVerify_code(String verify_code) {
+		this.verify_code = verify_code;
 	}
 }

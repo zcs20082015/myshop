@@ -19,43 +19,23 @@ public enum ErrorCode {
 	SYS_DATA_FORMAT_ERROR("9005", "系统异常，请联系客服处理。"),
 	SYS_REPEAT_SUBMIT("9006", "您的请求重复提交或过于频繁，请稍后再试。"),
 	SYS_OVERLOAD("9007", "系统繁忙，请稍后再试。"),
-	SYS_MQSEND_FAIL("9008", "MQ消息发送异常"),
 	SYS_FAIL("9999", "当前系统错误，请联系客服处理。"),
 	
 	
 	SYS_CHECK_REQUEST_ERROR("9007", "系统异常，请联系客服处理。"),
-	SYS_BUILD_API_RES("9008", "系统异常，请联系客服处理。"),
 	SYS_CACHE_TIMEOUT("9009", "系统缓存异常，请稍后再试。"),
 	SYS_AUDIT_NOPASS("9010", "有贝分期目前只开放部分用户使用，暂时无法为您提供服务，我们将努力扩大服务范围期待与您再次相逢。"),
 	SYS_TRANSCODE_VALIDATE_FAIL("9011", "系统传输数据错误，请联系客服处理。"),
 	SYS_PASSWORD_DEAL_FAIL("9012", "系统异常，请联系客服处理。"),
-	/**************交易信息校验类返回码（701000-701999，VALIDATE开头）********************/
-	VALIDATE_PARAM_ERROR("7010", "您填写的信息有误，请重新填写"),							//您填写的信息有误
-	VALIDATE_MSGCODE_FAIL("7011", "请输入正确的验证码"),											//短信验证码错误
-	VALIDATE_TOKEN_FAIL("7012", "登录信息已失效，请重新登录"),								//登录信息已失效，请重新登录
-	VALIDATE_NOID_FAIL("7013", "该身份证号已绑定手机号{0}，请联系400-9936-111修改"),	 
-	/**************交易消息类返回码（702000-702999，MSG开头）********************/
-	MSG_SMSSEND_FAIL("7020", "短信发送失败"),												//短信发送失败
-	MSG_ADDFEEDBACK_FAIL("7021", "意见反馈提交失败"),										//意见反馈提交失败
-	MSG_VERSIONQRY_FAIL("7022", "检查版本更新失败"),										//检查版本更新失败
-	MSG_PUSHRECORDQRY_FAIL("7023", "个人消息查询失败"),									//个人消息查询失败
-	MSG_NO_NEWVERSION("7024", "当前已是最新版本"),	
+	/**************货物相关类返回码********************/
+	GOODS_STOCK_NOT_ENOUGH("3001", "商品库存不足"),	
 	
 	
-	/********************************商户信息返回码（CODE以TRADER开头，1001-19999）**********************************/
-	TRADER_INVALID("1001", "商户代码错误，请联系客服处理。"),
-	TRADER_IP_INVALID("1002", "商户IP未鉴权，请联系客服处理。"),
-	TRADER_USERID_NOTMATCH_MOBILE("1003", "当前手机号和帐号不一致，请确认是否更换过手机号并联系客服处理。"),
-	TRADER_AGING_PRO_NOTEXIST("1004", "未查询到分期配置，请联系客服处理。"),
-	TRADER_PARA_NOTEXIST("1005", "控制参数查询失败，请联系客服处理。"),
-	TRADER_USER_BIND_QUERY_FAIL("1006", "系统查询失败，请联系客服处理。"),
-	TRADER_USER_BIND_MOB_ERROR("1007", "该手机号已被手机尾号{0}绑定，请确认是否更换过手机号并联系客服处理。"),
-	TRADER_SIGN_FAIL("1008", "商户签名校验失败"),
 	
 	/********************************用户信息返回码（CODE以USER开头，2001-29999）**********************************/
 	USER_REGISTER_FAIL("2001", "注册失败，请重新发起申请。"),
 	USER_ACTIVE_FAIL("2002", "激活失败，请重新发起申请。"),
-	USER_NOT_EXIST("2003", "用户信息不存在，请联系商户进行信息注册。"),
+	USER_NOT_EXIST("2003", "用户信息不存在"),
 	USER_INFO_QUERY_FAIL("2004", "用户信息查询失败，请稍后再试。"),
 	USER_PASSWORD_ERROR("2005", "登陆密码错误，请重新输入。"),
 	USER_VERIFYCODE_ERROR("2006", "验证码错误，请重新输入。"),

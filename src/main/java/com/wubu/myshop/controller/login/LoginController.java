@@ -28,11 +28,10 @@ import com.wubu.myshop.service.IUserService;
 import com.wubu.share.controller.BaseController;
 import com.wubu.share.domain.base.BaseResBean;
 import com.wubu.share.enums.ErrorCode;
-import com.wubu.share.exception.json.JsonParamException;
-import com.wubu.share.exception.json.JsonRetException;
-import com.wubu.share.exception.page.PageParamsException;
-import com.wubu.share.exception.page.PageRetException;
+import com.wubu.share.exception.BusiException;
+import com.wubu.share.exception.ParamException;
 import com.wubu.share.util.FuncUtils;
+import com.wubu.share.util.MD5Utils;
 
 
 /** <p>Title: LoginController </p>
@@ -68,13 +67,8 @@ public class LoginController extends BaseController{
 		log.info(tag+"进入用户注册处理方法，请求参数：{}","regist",correlationID,null,JSON.toJSONString(userRegistReq));
 		
 		//参数校验
-		if (result.hasErrors()){
-            List<ObjectError> errorList = result.getAllErrors();
-            for(ObjectError error : errorList){
-            	log.info(tag + "用户注册接口，请求参数校验失败："+error.getDefaultMessage(),"regist",correlationID,null);
-                throw new JsonParamException(ErrorCode.SYS_CHECK_PARAM_ERROR.code,error.getDefaultMessage());
-            }
-        }
+		paramValidate(result, "regist", null, correlationID);
+		
 		//验证码校验
 		
 		//用户信息校验
@@ -82,9 +76,11 @@ public class LoginController extends BaseController{
 		//用户注册
 		UserInfo userInfo=userService.userRegist(JSON.parseObject(JSON.toJSONString(userRegistReq), UserInfo.class));
 		if(null==userInfo){
-			throw new JsonRetException(ErrorCode.USER_REGISTER_FAIL,null);
+			throw new BusiException(ErrorCode.USER_REGISTER_FAIL);
 		}
 		log.info(tag + "用户注册成功，用户号：{}","regist",correlationID,null,userInfo.getOidUserno());
+		
+		session.setAttribute("user_id", userInfo.getUserId());
 		
 		return buildSuccRes();
 	}
@@ -101,7 +97,7 @@ public class LoginController extends BaseController{
 		log.info(tag+"进入用户[{}]信息存在性校验处理方法","existCheck",correlationID,mob_user,user_id);
 		
 		if(FuncUtils.isNull(user_id)&&FuncUtils.isNull(mob_user)){
-			throw new JsonParamException(ErrorCode.VALIDATE_PARAM_ERROR);
+			throw new ParamException();
 		}
 		UserInfo user=new UserInfo();
 		if(!FuncUtils.isNull(user_id)){
@@ -110,7 +106,7 @@ public class LoginController extends BaseController{
 			user=userService.singleQuery(user);
 			if(null!=user){
 				log.info(tag+"用户[{}]信息存在性校验处理方法，user_id已被占用--{}","existCheck",correlationID,null,user_id,JSON.toJSONString(user));
-				throw new JsonRetException(ErrorCode.USER_ID_HAS_BEEN,null);
+				throw new BusiException(ErrorCode.USER_ID_HAS_BEEN);
 			}
 		}
 		
@@ -121,7 +117,7 @@ public class LoginController extends BaseController{
 			user=userService.singleQuery(user);
 			if(null!=user){
 				log.info(tag+"用户[{}]信息存在性校验处理方法，mob_user已被占用--{}","existCheck",correlationID,mob_user,mob_user,JSON.toJSONString(user));
-				throw new JsonRetException(ErrorCode.USER_MOB_HAS_BEEN,null);
+				throw new BusiException(ErrorCode.USER_MOB_HAS_BEEN);
 			}
 		}
 		
@@ -132,13 +128,58 @@ public class LoginController extends BaseController{
 	 * @author zhengcs@uubee.com
 	 * @date 2017年5月18日 上午11:46:58
 	 */
-	@RequestMapping("login")
+	@RequestMapping("/login")
 	public BaseResBean login(@RequestBody LoginReq loginReq){
-		log.info(tag+"进入用户登陆处理方法，请求参数：{}","login",session.getId(),null,JSON.toJSONString(loginReq));
+		String correlationID=session.getId();
+		log.info(tag+"进入用户登陆处理方法，请求参数：{}","login",correlationID,loginReq.getUser_id(),JSON.toJSONString(loginReq));
+		//参数校验
+		if(FuncUtils.isNull(loginReq.getUser_id())||FuncUtils.isNull(loginReq.getPassword())){
+			throw new ParamException();
+		}
+		UserInfo user=singleQueryUserInfo(loginReq.getUser_id(), null, correlationID);
+		if(null==user){
+			log.info(tag+"用户登陆处理方法，用户信息不存在","login",correlationID,loginReq.getUser_id());
+			throw new BusiException(ErrorCode.USER_NOT_EXIST);
+		}
+		String password=MD5Utils.MD5Encrpytion(MD5Utils.MD5Encrpytion(loginReq.getPassword()));
 		
+		if(!password.equals(user.getPassword())){
+			log.info(tag+"用户登陆处理方法，用户登陆密码错误","login",correlationID,loginReq.getUser_id());
+			throw new BusiException(ErrorCode.USER_PASSWORD_ERROR);
+		}
+		log.info(tag+"用户登陆处理方法，用户登陆成功","login",correlationID,loginReq.getUser_id());
 		
-		return null;
+		session.setAttribute("user_id", loginReq.getUser_id());
+		
+		return buildSuccRes();
 	}
+	
+	@RequestMapping("verifyLogin")
+	public BaseResBean loginByVerify(@RequestBody LoginReq loginReq){
+		String correlationID=session.getId();
+		log.info(tag+"进入用户验证码登陆处理方法，请求参数：{}","loginByVerify",correlationID,loginReq.getMob_user(),JSON.toJSONString(loginReq));
+		//参数校验
+		if(FuncUtils.isNull(loginReq.getMob_user())||FuncUtils.isNull(loginReq.getVerify_code())){
+			throw new ParamException();
+		}
+		UserInfo user=singleQueryUserInfo(null, loginReq.getMob_user(), correlationID);
+		if(null==user){
+			log.info(tag+"用户验证码登陆处理方法，用户信息不存在","loginByVerify",correlationID,loginReq.getMob_user());
+			throw new BusiException(ErrorCode.USER_NOT_EXIST);
+		}
+		String password=MD5Utils.MD5Encrpytion(MD5Utils.MD5Encrpytion(loginReq.getPassword()));
+		
+		if(!password.equals(user.getPassword())){
+			log.info(tag+"用户验证码登陆处理方法，用户登陆密码错误","loginByVerify",correlationID,loginReq.getMob_user());
+			throw new BusiException(ErrorCode.USER_PASSWORD_ERROR);
+		}
+		log.info(tag+"用户验证码登陆处理方法，用户登陆成功","loginByVerify",correlationID,loginReq.getMob_user());
+		
+		session.setAttribute("user_id", loginReq.getUser_id());
+		
+		return buildSuccRes();
+	}
+	
 	private void existCheck(UserRegistReq req){
 		
 		UserInfo user=new UserInfo();
@@ -147,7 +188,7 @@ public class LoginController extends BaseController{
 		user=userService.singleQuery(user);
 		if(null!=user){
 			log.info(tag+"用户[{}]信息存在性校验处理方法，user_id已被占用--{}","existCheck",session.getId(),null,req.getUser_id(),JSON.toJSONString(user));
-			throw new JsonRetException(ErrorCode.USER_ID_HAS_BEEN,null);
+			throw new BusiException(ErrorCode.USER_ID_HAS_BEEN);
 		}
 		user=new UserInfo();
 		user.setCorrelationID(session.getId());
@@ -155,7 +196,7 @@ public class LoginController extends BaseController{
 		user=userService.singleQuery(user);
 		if(null!=user){
 			log.info(tag+"用户[{}]信息存在性校验处理方法，mob_user已被占用--{}","existCheck",session.getId(),req.getMob_user(),req.getMob_user(),JSON.toJSONString(user));
-			throw new JsonRetException(ErrorCode.USER_MOB_HAS_BEEN,null);
+			throw new BusiException(ErrorCode.USER_MOB_HAS_BEEN);
 		}
 	}
 }

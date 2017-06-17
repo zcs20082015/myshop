@@ -1,5 +1,7 @@
 package com.wubu.share.exception;
 
+import com.wubu.share.enums.ErrorCode;
+
 /**
  * 基础异常类
  * Created by king on 9/21/16.
@@ -13,6 +15,12 @@ public class BaseException extends RuntimeException {
         super();
     }
 
+    public BaseException(ErrorCode code) {
+        super();
+        setErrorCode(code.code);
+        setErrorMsg(code.msg);
+    }
+    
     public BaseException(String errorCode,String errorMsg) {
         super();
         setErrorCode(errorCode);

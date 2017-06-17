@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wubu.myshop.dao.mapper.GoodsInfoMapper">
+  <resultMap id="BaseResultMap" type="com.wubu.myshop.dao.domain.GoodsInfo">
+    <id column="oid_goods" jdbcType="VARCHAR" property="oidGoods" />
+    <result column="name_goods" jdbcType="VARCHAR" property="nameGoods" />
+    <result column="count_goods" jdbcType="INTEGER" property="countGoods" />
+    <result column="price_goods" jdbcType="VARCHAR" property="priceGoods" />
+    <result column="info_goods" jdbcType="VARCHAR" property="infoGoods" />
+    <result column="image_goods" jdbcType="VARCHAR" property="imageGoods" />
+    <result column="status_goods" jdbcType="CHAR" property="statusGoods" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="dt_create" jdbcType="TIMESTAMP" property="dtCreate" />
+    <result column="dt_update" jdbcType="TIMESTAMP" property="dtUpdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    oid_goods, name_goods, count_goods, price_goods, info_goods, image_goods, status_goods, 
+    memo, dt_create, dt_update
+  </sql>
+  <select id="selectByExample" parameterType="com.wubu.myshop.dao.domain.GoodsInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_info_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_info_goods
+    where oid_goods = #{oidGoods,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_info_goods
+    where oid_goods = #{oidGoods,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wubu.myshop.dao.domain.GoodsInfoExample">
+    delete from tb_info_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wubu.myshop.dao.domain.GoodsInfo">
+    insert into tb_info_goods (oid_goods, name_goods, count_goods, 
+      price_goods, info_goods, image_goods, 
+      status_goods, memo, dt_create, 
+      dt_update)
+    values (#{oidGoods,jdbcType=VARCHAR}, #{nameGoods,jdbcType=VARCHAR}, #{countGoods,jdbcType=INTEGER}, 
+      #{priceGoods,jdbcType=VARCHAR}, #{infoGoods,jdbcType=VARCHAR}, #{imageGoods,jdbcType=VARCHAR}, 
+      #{statusGoods,jdbcType=CHAR}, #{memo,jdbcType=VARCHAR}, #{dtCreate,jdbcType=TIMESTAMP}, 
+      #{dtUpdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wubu.myshop.dao.domain.GoodsInfo">
+    insert into tb_info_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oidGoods != null">
+        oid_goods,
+      </if>
+      <if test="nameGoods != null">
+        name_goods,
+      </if>
+      <if test="countGoods != null">
+        count_goods,
+      </if>
+      <if test="priceGoods != null">
+        price_goods,
+      </if>
+      <if test="infoGoods != null">
+        info_goods,
+      </if>
+      <if test="imageGoods != null">
+        image_goods,
+      </if>
+      <if test="statusGoods != null">
+        status_goods,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="dtCreate != null">
+        dt_create,
+      </if>
+      <if test="dtUpdate != null">
+        dt_update,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oidGoods != null">
+        #{oidGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="nameGoods != null">
+        #{nameGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="countGoods != null">
+        #{countGoods,jdbcType=INTEGER},
+      </if>
+      <if test="priceGoods != null">
+        #{priceGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="infoGoods != null">
+        #{infoGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="imageGoods != null">
+        #{imageGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="statusGoods != null">
+        #{statusGoods,jdbcType=CHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="dtCreate != null">
+        #{dtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dtUpdate != null">
+        #{dtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wubu.myshop.dao.domain.GoodsInfoExample" resultType="java.lang.Long">
+    select count(*) from tb_info_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_info_goods
+    <set>
+      <if test="record.oidGoods != null">
+        oid_goods = #{record.oidGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nameGoods != null">
+        name_goods = #{record.nameGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countGoods != null">
+        count_goods = #{record.countGoods,jdbcType=INTEGER},
+      </if>
+      <if test="record.priceGoods != null">
+        price_goods = #{record.priceGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoGoods != null">
+        info_goods = #{record.infoGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageGoods != null">
+        image_goods = #{record.imageGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusGoods != null">
+        status_goods = #{record.statusGoods,jdbcType=CHAR},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtCreate != null">
+        dt_create = #{record.dtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dtUpdate != null">
+        dt_update = #{record.dtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_info_goods
+    set oid_goods = #{record.oidGoods,jdbcType=VARCHAR},
+      name_goods = #{record.nameGoods,jdbcType=VARCHAR},
+      count_goods = #{record.countGoods,jdbcType=INTEGER},
+      price_goods = #{record.priceGoods,jdbcType=VARCHAR},
+      info_goods = #{record.infoGoods,jdbcType=VARCHAR},
+      image_goods = #{record.imageGoods,jdbcType=VARCHAR},
+      status_goods = #{record.statusGoods,jdbcType=CHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      dt_create = #{record.dtCreate,jdbcType=TIMESTAMP},
+      dt_update = #{record.dtUpdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wubu.myshop.dao.domain.GoodsInfo">
+    update tb_info_goods
+    <set>
+      <if test="nameGoods != null">
+        name_goods = #{nameGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="countGoods != null">
+        count_goods = #{countGoods,jdbcType=INTEGER},
+      </if>
+      <if test="priceGoods != null">
+        price_goods = #{priceGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="infoGoods != null">
+        info_goods = #{infoGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="imageGoods != null">
+        image_goods = #{imageGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="statusGoods != null">
+        status_goods = #{statusGoods,jdbcType=CHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="dtCreate != null">
+        dt_create = #{dtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dtUpdate != null">
+        dt_update = #{dtUpdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where oid_goods = #{oidGoods,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wubu.myshop.dao.domain.GoodsInfo">
+    update tb_info_goods
+    set name_goods = #{nameGoods,jdbcType=VARCHAR},
+      count_goods = #{countGoods,jdbcType=INTEGER},
+      price_goods = #{priceGoods,jdbcType=VARCHAR},
+      info_goods = #{infoGoods,jdbcType=VARCHAR},
+      image_goods = #{imageGoods,jdbcType=VARCHAR},
+      status_goods = #{statusGoods,jdbcType=CHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      dt_create = #{dtCreate,jdbcType=TIMESTAMP},
+      dt_update = #{dtUpdate,jdbcType=TIMESTAMP}
+    where oid_goods = #{oidGoods,jdbcType=VARCHAR}
+  </update>
+</mapper>

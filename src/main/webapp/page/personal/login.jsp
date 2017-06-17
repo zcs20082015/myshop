@@ -108,7 +108,7 @@ basePath = Property.getProperty("url_project");
 												<div class="item-inner">
 													<div class="item-title label">账号</div>
 													<div class="item-input">
-														<input id="mob_num" type="text" placeholder="请输入用户名或手机号码" >
+														<input id="user_id" type="text" placeholder="请输入登录账号" >
 													</div>
 													<div class="login-phone-logo"></div>
 												</div>
@@ -146,23 +146,15 @@ basePath = Property.getProperty("url_project");
 							
 							//登录按钮样式
 							function loginBtn (){
-								if($("#mob_num").val() != "" && $("#passwd").val() != ""){
+								if($("#user_id").val() != "" && $("#passwd").val() != ""){
 									$("#loginBtn").removeClass("disabledBtn").removeAttr("disabled");
 								}else{
 									$("#loginBtn").addClass("disabledBtn").attr("disabled","disabled");
 								}
 							}
-							//检测手机号
-		                  	function checkPhone (v){
-		                        var PhoneRe =/^(1)(3|4|5|7|8)([0-9]{9})/;
-		                        if(PhoneRe.test(v)){
-		                            return true;
-		                        }
-		                            return false;
-		                  	}
 
 							//手机号输入的事件
-							$("#mob_num").on("input",function(){
+							$("#user_id").on("input",function(){
 								loginBtn ();
 							});
 							
@@ -173,8 +165,8 @@ basePath = Property.getProperty("url_project");
 							//登录
 							$("#loginBtn").click(function(){
 								$("#loginBtn").attr("disabled","disabled");
-								if(!checkPhone ($("#mob_num").val())){
-									$.alert("请输入正确的手机号");
+								if(!$("#user_id").val()){
+									$.alert("请输入登陆账号");
 									$("#loginBtn").removeAttr("disabled");
 									return;
 								}
@@ -188,7 +180,7 @@ basePath = Property.getProperty("url_project");
 									url:"${pageContext.request.contextPath}/login/login.htm",
 									type:"POST",
 							        data:{
-							              mob_user:$("#mob_num").val(),
+							              user_id:$("#user_id").val(),
 							              password:$("#passwd").val()
 									},
 									dataType:'json',

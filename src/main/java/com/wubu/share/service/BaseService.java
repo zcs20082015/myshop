@@ -18,6 +18,6 @@ public class BaseService {
 
 	protected Logger log=LoggerFactory.getLogger(BaseService.class);
 	
-	protected String tag="Service[{}],Method[{}],correlationID[{}]--";
+	protected String tag="Method[{}],correlationID[{}]--";
 	
 }
